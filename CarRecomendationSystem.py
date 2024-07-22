@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import re
 import math
-import pd
+import pandas as pd
 
 from helper import Car
 
@@ -12,6 +12,7 @@ options.add_argument('--blink-settings=imagesEnabled=false')
 options.add_argument("--ignore-certificate-error")
 options.add_argument("--ignore-ssl-errors")
 options.add_argument("--log-level=1")
+options.add_argument("--headless=true")
 
 # Start Chrome with chrome options
 driver = webdriver.Chrome(options=options)
@@ -46,6 +47,7 @@ else:
     print("No numeric values found in the string.")
 
 linksToArticlePages = []
+pricesMap = {}
 
 for pageNumber in range(1, numberOfPages+1):
     # Navigate to the webpage and apply search parameters
@@ -55,10 +57,12 @@ for pageNumber in range(1, numberOfPages+1):
                                     parameters['year_from']))
 
     # Extract data from the webpage
-    carLinks = driver.find_elements(By.XPATH, '//article[@data-ownerid]/div[@class="image"]/a')
+    carLinks = driver.find_elements(By.XPATH, '//article[@data-ownerid]')
 
     for car in carLinks:
-        linksToArticlePages.append(car.get_property('href'))
+        link = car.find_element(By.XPATH, './/div[@class="image"]/a').get_property('href')
+        linksToArticlePages.append(link)
+        pricesMap[link] = car.get_attribute('data-price')
 
 carDetails = []
 
@@ -69,12 +73,16 @@ def getCarDetail(detail):
         return None
 
 carAmount = len(linksToArticlePages)
-i = 1
+i = 0
+limit_selection = None
 
 # Extract data from the car pages
 for link in linksToArticlePages:
-    print(f"Scraping car {i}/{carAmount} - {link}", flush=True)
     i+=1
+    if limit_selection is not None and i >= limit_selection:
+        break
+    print(f"Scraping car {i}/{carAmount} - {link}", flush=True)
+    
     # Go to the car's page and scrape the data
     try:
         driver.get(link)
@@ -86,13 +94,10 @@ for link in linksToArticlePages:
     model = getCarDetail("Model")
     year = getCarDetail("Godište")
     distanceTraveled = getCarDetail("Kilometraža")
-    distanceTraveled = distanceTraveled.strip(' ')[0] if distanceTraveled is not None else None
     bodyType = getCarDetail("Karoserija")
     fuelType = getCarDetail("Gorivo")
     cubicCapacity = getCarDetail("Kubikaža")
-    cubicCapacity = cubicCapacity.strip(' ')[0] if cubicCapacity is not None else None
     motorStrength = getCarDetail("Motorska snaga")
-    motorStrength = motorStrength.strip(' ')[0] if motorStrength is not None else None
     fixedPrice = getCarDetail("Fiksna cena") == "DA"
     exchange = getCarDetail("Zamena:") == "DA"
     linkToArticle = link
@@ -100,18 +105,19 @@ for link in linksToArticlePages:
     numberOfSeats = getCarDetail("Broj sedišta")
     color = getCarDetail("Boja")
     condition = getCarDetail("Oštećenje")
-    try:
-        price = driver.find_element(By.XPATH, '//span[@class="priceClassified"]').text
-    except:
-        price = None
+    price = pricesMap[link]
 
     car = Car(brand=brand, model=model, year=year, distanceTraveled=distanceTraveled, bodyType=bodyType, fuelType=fuelType, cubicCapacity=cubicCapacity, 
             motorStrength=motorStrength, fixedPrice=fixedPrice, exchange=exchange, linkToArticle=linkToArticle, numberOfDoors=numberOfDoors, 
             numberOfSeats=numberOfSeats, color=color, condition=condition, price=price, state=state)
     carDetails.append(car)
 
-for car in carDetails:
-    print(car.toString(), flush=True)
+outputData = "cars.csv"
+
+df = pd.DataFrame([vars(car) for car in carDetails])
+print(df)
+
+df.to_csv(outputData, index=False)
 
 driver.quit()
 
