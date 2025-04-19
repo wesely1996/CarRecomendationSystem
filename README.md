@@ -12,7 +12,7 @@
   <p align="center">
     This project is designed to webscrape car listing sites, save the scraped data, and give statistics based on the data gathered.
     <br />
-<!--     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a> -->
+<!--     <a href="https://github.com/wesely1996/CarRecomendationSystem"><strong>Explore the docs »</strong></a> -->
 <!--     <br /> -->
   </p>
 </p>
@@ -77,7 +77,7 @@ Install Python 3.12.0+ and the packages in the requirements.txt.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/wesely1996/CarRecomendationSystem.git
    ```
 2. Install Python packages
    ```sh
@@ -101,20 +101,9 @@ Nikola Veselinović
 Project Link: [https://github.com/wesely1996/CarRecomendationSystem](https://github.com/wesely1996/CarRecomendationSystem)
 
 
-
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/wesely1996/CarRecomendationSystem/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/github_username
+[linkedin-url]: https://linkedin.com/in/nikola-veselinovic-nsv
